@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RCON Monitor</title>
+</head>
+<body>
+  <h1>RCON Monitor</h1>
+  <div id="playersData"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    // Function to update players data on the HTML page
+    const updatePlayersData = (data) => {
+      document.getElementById('playersData').innerText = data;
+    };
+
+    // Initial request to get showplayers data
+    socket.emit('getPlayers');
+
+    // Listen for playersData updates
+    socket.on('playersData', (data) => {
+      updatePlayersData(data);
+    });
+
+    // Update playersData every 5 seconds
+    setInterval(() => {
+      socket.emit('getPlayers');
+    }, 5000);
+  </script>
+</body>
+</html>
